@@ -56,3 +56,7 @@ Les fichiers graphiques générés se trouvent dans `backend/static/exports/` :
 
 - **Backend** : Flask, NumPy (Calcul vectoriel), Matplotlib (Graphes).
 - **Frontend** : React, Vite, TailwindCSS, Framer Motion.
+## Licence
+
+Ce projet est distribué sous la licence MIT. Voir le fichier `LICENSE` à la racine pour le texte complet de la licence.
+

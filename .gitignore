@@ -1,0 +1,28 @@
+# Node modules
+node_modules/
+dist/
+build/
+.env
+.DS_Store
+*.log
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+output_graphs/
+
+# Project Specific
+backend/static/exports/
+backend/static/encrypted.png
+backend/static/decrypted.png
+backend/static/temp_upload*
+*.zip
+
+# IDE
+.vscode/
+.idea/

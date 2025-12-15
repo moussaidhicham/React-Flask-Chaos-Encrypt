@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Unlock, FileUp, Database, ArrowRight } from 'lucide-react';
 import FileUpload from '../components/upload/FileUpload';
@@ -17,6 +17,24 @@ const DecryptionPage = () => {
         tent_x0: 0.2, tent_r: 1.99,
         pwlcm_x0: 0.3, pwlcm_p: 0.254
     });
+
+    // Load session params if available
+    useEffect(() => {
+        const fetchSession = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/result');
+                if (response.data && response.data.params) {
+                    setParams(response.data.params);
+                }
+            } catch (err) {
+                // No session or error, keep defaults
+                console.log("No active session params found");
+            }
+        };
+        if (mode === 'session') {
+            fetchSession();
+        }
+    }, [mode]);
 
     const handleDecrypt = async () => {
         if (mode === 'upload' && !file) {

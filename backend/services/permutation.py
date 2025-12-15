@@ -14,22 +14,23 @@ class PermutationService:
         return p_box
 
     @staticmethod
-    def generate_sbox(p_box):
+    def generate_sbox(p_box, al_sequence):
         """
         Génère la Table de substitution S-Box (256 x 256).
         S[0] = P
-        S[i][j] = S[i-1][(j + i) mod 256]
+        S[i][j] = S[i-1][(j + AL[i]) mod 256]
         """
         s_box = np.zeros((256, 256), dtype=np.uint8)
         s_box[0] = p_box
         
+        # We need the first 256 values of AL for the 256 rows
+        al_subset = al_sequence[:256].astype(np.int32)
+        
         for i in range(1, 256):
-            # Roll shifts elements. To limit manual loops, we use np.roll.
-            # Formula: S[i][j] = S[i-1][(j + i) % 256]
-            # This effectively shifts S[i-1] to the LEFT by i positions.
-            # Example: j=0 -> index i. j=1 -> index i+1.
-            # np.roll with negative shift is left shift.
-            s_box[i] = np.roll(s_box[i-1], -i)
+            # Formula: S[i][j] = S[i-1][(j + AL[i]) % 256]
+            # This effectively shifts S[i-1] to the LEFT by AL[i] positions.
+            shift = al_subset[i]
+            s_box[i] = np.roll(s_box[i-1], -shift)
             
         return s_box
 

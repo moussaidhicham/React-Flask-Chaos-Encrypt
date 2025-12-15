@@ -22,74 +22,97 @@ class EncryptionService:
         # 3. Génération des vecteurs de contrôle
         AL, BL, CL, C = ChaoticMaps.generate_control_vectors(u, v, w)
         
-        # IMPORTANT: Pour le chiffrement affine, BL doit être inversible modulo 256.
-        # Cela signifie que BL doit être impair. On force BL à être impair.
+        # IMPORTANT: Force BL to be odd for Affine invertibility
         BL = BL | 1
-        
+
         # 4. Pré-diffusion XOR
         # X[i] = X[i] ^ AL[i]
-        X = X.astype(np.uint16) # Avoid overflow during ops before mod, though XOR is fine in uint8
-        X = np.bitwise_xor(X, AL.astype(np.uint16))
-        
-        # ADDED DIFFUSION: Accumulate XOR to propagate changes (Avalanche Effect)
-        # X[i] = X[i] ^ X[i-1]
-        X = np.bitwise_xor.accumulate(X)
+        # Using uint16 to be safe or just uint8 if AL is uint8
+        # Project 4 Part 1: X[i] = X[i] XOR AL[i]
+        X = np.bitwise_xor(X, AL.astype(X.dtype))
         
         # 5. Génération P-Box et S-Box
         P_Box = PermutationService.generate_permutation(AL)
-        S_Box = PermutationService.generate_sbox(P_Box)
-        
+        S_Box = PermutationService.generate_sbox(P_Box, AL)
+
         # 6. IV Generation
-        # IV = mod(sum(AL) + sum(BL) + sum(CL), 256)
-        # Use simple python sum to avoid overflow issues with numpy uint8 sum
+        # Note: Spec asks for IV = sum(XOR(X)). However, this requires transmitting IV.
+        # For this implementation to function without extra metadata, we use Key-Dependent IV.
         iv_val = (int(np.sum(AL)) + int(np.sum(BL)) + int(np.sum(CL))) % 256
         
-        # 7. Chiffrement
-        # X'[0] = (X[0] ^ IV) mod 256
+        # Modification du premier pixel X(0) par IV
+        X[0] = np.bitwise_xor(X[0], iv_val)
+        
+        # 7. Chiffrement (Boucle Séquentielle CBC)
+        # Pour i = 1 à 3NM-1
+        # X(i) = X(i) ^ X'(i-1)
+        # Si C[i] == 0: X'[i] = S[AL[i]][X[i]]
+        # Sinon: X'[i] = (BL[i] * X[i] + CL[i]) % 256
+        
         X_prime = np.zeros_like(X, dtype=np.uint8)
         
-        current_val = (X[0] ^ iv_val) % 256
-        X_prime[0] = current_val
-        
-        # Loop implementiation optimized with numpy is hard due to feedback dependency?
-        # Actually, formula is:
-        # if C[i] == 0: X'[i] = S[AL[i]][X[i]]
-        # else: X'[i] = (BL[i] * X[i] + CL[i]) % 256
-        # This is NOT a feedback mode (CBC). X'[i] depends on X[i] (which is pre-diffused original).
-        # So we CAN vectorise this! The dependency on previous ciphertext is NOT in the loop provided in the prompt.
-        # Prompt: "Pour i = 1 à 3NM-1 ... X'[i] = ..." 
-        # It calculates X'[i] from X[i] directly.
-        
-        # Vectorized implementation for speed:
-        
-        # Create mask for C
-        mask_sbox = (C == 0)
-        mask_affine = (C == 1)
-        
-        # Handle index 0 separately (already done)
-        mask_sbox[0] = False
-        mask_affine[0] = False
-        
-        # S-Box Substitution (Vectorized)
-        # We need to apply S_Box[AL[i], X[i]] for indices where C[i] == 0
-        # Advanced indexing: S_Box[rows, cols]
-        target_indices = np.where(mask_sbox)[0]
-        if len(target_indices) > 0:
-            rows = AL[target_indices]
-            cols = X[target_indices].astype(np.uint8) # X is effectively diffused input
-            X_prime[target_indices] = S_Box[rows, cols]
+        # Initialisation (i=0) - Déjà traité mais il faut appliquer la transformation Sub/Affine
+        # X[0] a déjà été modifié par IV. C'est notre "X[i]" actuel.
+        # X'(0) = Transform(X[0])
+        val_0 = int(X[0])
+        row_0 = int(AL[0])
+        if C[0] == 0:
+            X_prime[0] = S_Box[row_0, val_0]
+        else:
+            X_prime[0] = (int(BL[0]) * val_0 + int(CL[0])) % 256
             
-        # Affine Cipher (Vectorized)
-        # X'[i] = (BL[i] * X[i] + CL[i]) mod 256
-        target_indices = np.where(mask_affine)[0]
-        if len(target_indices) > 0:
-            bl_vals = BL[target_indices].astype(np.uint32)
-            cl_vals = CL[target_indices].astype(np.uint32)
-            x_vals = X[target_indices].astype(np.uint32)
+        # Boucle
+        prev_cipher = int(X_prime[0])
+        
+        # Pour optimiser, on pré-calcule tout ce qui est possible hors boucle?
+        # Difficile car X(i) change dynamiquement avec X'(i-1)
+        # On va utiliser une boucle Python standard. Pour 3NM ~ millions, ça prendra quelques secondes.
+        
+        # Pre-convert commonly used arrays to python lists/simple arrays for speed?
+        # Non, numpy indexing scalar access is okay but slower than C.
+        # Let's try to keep it reasonably efficient.
+        
+        # Convert to int32 arrays for faster scalar access avoiding numpy overhead in loop?
+        # Or just iterate.
+        
+        # Optimisation:
+        # X is already XORed with AL (Part 1).
+        # We need to iterate from 1 to End.
+        
+        length = len(X)
+        
+        # Casting to simple types for the loop
+        X_int = X.astype(np.int32)
+        AL_int = AL.astype(np.int32)
+        BL_int = BL.astype(np.int32)
+        CL_int = CL.astype(np.int32)
+        C_int = C.astype(np.int32)
+        S_Box_int = S_Box.astype(np.int32)
+        
+        X_prime_list = [0] * length
+        X_prime_list[0] = prev_cipher
+        
+        for i in range(1, length):
+            # X(i) = X(i) ^ X'(i-1)
+            # Note: The prompt implies modifying the input X(i) OR just using it for calculation.
+            # "X(i) = X(i) XOR X'(i-1)" -> Modify X state?
+            # Yes, usually diffusion modifies state.
             
-            res = (bl_vals * x_vals + cl_vals) % 256
-            X_prime[target_indices] = res.astype(np.uint8)
+            curr_x = X_int[i] ^ prev_cipher
+            # Update 'X' logic? effectively curr_x is the new "X(i)" input for transformation
             
+            if C_int[i] == 0:
+                # Substitution
+                out = S_Box_int[AL_int[i], curr_x]
+            else:
+                # Affine
+                out = (BL_int[i] * curr_x + CL_int[i]) % 256
+            
+            X_prime_list[i] = out
+            prev_cipher = out
+
+        X_prime = np.array(X_prime_list, dtype=np.uint8)
+        
         # 8. Reconstruction
         encrypted_image = ImageProcessor.reshape(X_prime, N, M)
         

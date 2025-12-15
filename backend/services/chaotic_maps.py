@@ -72,20 +72,21 @@ class ChaoticMaps:
     @staticmethod
     def generate_control_vectors(u, v, w):
         """
-        Génère les vecteurs AL, BL, CL et le vecteur de contrôle C.
-        AL[i] = floor(mod((u[i] + v[i]) * 10^14, 256))
-        BL[i] = floor(mod((v[i] + w[i]) * 10^14, 256))
-        CL[i] = floor(mod((u[i] + w[i]) * 10^14, 256))
-        C[i]  = mod(AL[i] + BL[i] + CL[i], 2)
+        Génère les vecteurs AL, BL, CL et le vecteur de contrôle C selon le Projet 4.
+        AL(i) = (int)(u(i)*10^14 )%256
+        BL(i) = (int)(v(i)*10^14 )%256
+        CL(i) = (int)(w(i)*10^14 )%256
+        C(i) = 1 si u(i) >= w(i) else 0
         """
-        # Utilisation de numpy pour vectorisation rapide ici
         factor = 1e14
         
-        # Calcul vectorisé
-        al = np.floor(np.mod((u + v) * factor, 256)).astype(np.uint8)
-        bl = np.floor(np.mod((v + w) * factor, 256)).astype(np.uint8)
-        cl = np.floor(np.mod((u + w) * factor, 256)).astype(np.uint8)
+        # Casting to int after mod is safer/standard
+        # Using numpy vectorized operations
+        al = np.floor(np.mod(u * factor, 256)).astype(np.uint8)
+        bl = np.floor(np.mod(v * factor, 256)).astype(np.uint8)
+        cl = np.floor(np.mod(w * factor, 256)).astype(np.uint8)
         
-        c = np.mod(al.astype(np.uint16) + bl.astype(np.uint16) + cl.astype(np.uint16), 2).astype(np.uint8)
+        # C generation: 1 if u >= w else 0
+        c = (u >= w).astype(np.uint8)
         
         return al, bl, cl, c

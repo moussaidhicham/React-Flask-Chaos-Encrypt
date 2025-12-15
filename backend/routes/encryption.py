@@ -79,7 +79,8 @@ def encrypt():
         'graphs': {
             'chaotic_maps': map_paths,
             'sbox': sbox_paths
-        }
+        },
+        'params': chaos_params # Send back used params
     }
     
     # Cache result for Page Refresh recovery

@@ -1,4 +1,3 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # ChaosCrypt - Application de Chiffrement d'Images Chaotique
 
 Application web full-stack professionnelle pour le chiffrement d'images utilisant une combinaison de cartes chaotiques (Logistique, Tente, PWLCM), permutation S-Box dynamique et chiffrement affine.

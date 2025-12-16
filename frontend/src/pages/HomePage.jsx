@@ -64,47 +64,47 @@ const HomePage = () => {
                     { label: "Corrélation", value: "0.00", sub: "Statistique" },
                 ].map((stat, idx) => (
                     <div key={idx} className="glass-card p-6 rounded-2xl text-center border-t-2 border-primary/50">
-                        <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                        <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
                         <div className="text-sm font-semibold text-primary mb-1">{stat.label}</div>
-                        <div className="text-xs text-gray-500">{stat.sub}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{stat.sub}</div>
                     </div>
                 ))}
             </motion.section>
 
             {/* Objectives / Features */}
             <section className="max-w-6xl mx-auto px-4">
-                <motion.h2 variants={itemVariants} className="text-3xl font-bold text-center mb-12">Architecture de Sécurité</motion.h2>
+                <motion.h2 variants={itemVariants} className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Architecture de Sécurité</motion.h2>
 
                 <div className="grid md:grid-cols-3 gap-8">
                     <motion.div variants={itemVariants} className="glass-card p-8 rounded-2xl relative overflow-hidden group">
                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Shield size={100} />
+                            <Shield size={100} className="text-gray-900 dark:text-white" />
                         </div>
                         <Shield className="text-accent mb-6" size={40} />
-                        <h3 className="text-xl font-bold mb-3">Triple Chaos</h3>
-                        <p className="text-gray-400 leading-relaxed">
+                        <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Triple Chaos</h3>
+                        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                             Utilisation simultanée des cartes Logistique, Tente et PWLCM pour générer des séquences pseudo-aléatoires imprévisibles et complexes.
                         </p>
                     </motion.div>
 
                     <motion.div variants={itemVariants} className="glass-card p-8 rounded-2xl relative overflow-hidden group">
                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <Lock size={100} />
+                            <Lock size={100} className="text-gray-900 dark:text-white" />
                         </div>
                         <Lock className="text-primary mb-6" size={40} />
-                        <h3 className="text-xl font-bold mb-3">S-Box Dynamique</h3>
-                        <p className="text-gray-400 leading-relaxed">
+                        <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">S-Box Dynamique</h3>
+                        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                             Génération d'une table de substitution unique pour chaque image basée sur la clé chaotique, rendant les attaques par dictionnaire impossibles.
                         </p>
                     </motion.div>
 
                     <motion.div variants={itemVariants} className="glass-card p-8 rounded-2xl relative overflow-hidden group">
                         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <BarChart2 size={100} />
+                            <BarChart2 size={100} className="text-gray-900 dark:text-white" />
                         </div>
                         <BarChart2 className="text-success mb-6" size={40} />
-                        <h3 className="text-xl font-bold mb-3">Analyse Complète</h3>
-                        <p className="text-gray-400 leading-relaxed">
+                        <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Analyse Complète</h3>
+                        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                             Calcul automatique de plus de 30 métriques et génération de graphiques haute résolution, exportables instantanément pour vos rapports.
                         </p>
                     </motion.div>

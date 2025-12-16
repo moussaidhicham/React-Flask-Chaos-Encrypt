@@ -4,6 +4,8 @@ import axios from 'axios';
 import { Unlock, FileUp, Database, ArrowRight } from 'lucide-react';
 import FileUpload from '../components/upload/FileUpload';
 import ChaosParameters from '../components/parameters/ChaosParameters';
+import HackingLoader from '../components/ui/HackingLoader';
+import ImageCompare from '../components/ui/ImageCompare';
 
 const DecryptionPage = () => {
     const [mode, setMode] = useState('session'); // 'session' or 'upload'
@@ -140,20 +142,37 @@ const DecryptionPage = () => {
                         <ArrowRight className="text-gray-400" /> Résultat
                     </h3>
 
-                    {decryptedUrl ? (
-                        <div className="glass-card p-4 rounded-xl w-full animate-in zoom-in duration-500">
-                            <img
-                                src={`http://localhost:5000${decryptedUrl}?t=${Date.now()}`}
-                                alt="Decrypted"
-                                className="w-full h-auto rounded-lg shadow-2xl"
-                            />
-                            <div className="mt-4 text-center">
+                    {loading ? (
+                        <div className="glass-card p-10 rounded-xl w-full flex justify-center items-center">
+                            <HackingLoader messages={[
+                                "Initialisation du déchiffrement...",
+                                "Inversion de la Matrice S-Box...",
+                                "Calcul de l'inverse modulaire BL...",
+                                "Restauration de la diffusion CBC...",
+                                "Reconstruction de l'image originale..."
+                            ]} />
+                        </div>
+                    ) : decryptedUrl ? (
+                        <div className="w-full space-y-4 animate-in zoom-in duration-500">
+                            {/* Compare Image */}
+                            <div className="glass-card p-2 rounded-xl">
+                                <h4 className="text-center text-sm mb-2 text-gray-500">Glissez pour comparer (Chiffrée vs Restaurée)</h4>
+                                <ImageCompare
+                                    leftImage={mode === 'upload' && file ? URL.createObjectURL(file) : 'http://localhost:5000/static/encrypted.png'}
+                                    rightImage={`http://localhost:5000${decryptedUrl}?t=${Date.now()}`}
+                                    leftLabel="Cryptée"
+                                    rightLabel="Restaurée"
+                                />
+                            </div>
+
+                            {/* Download */}
+                            <div className="glass-card p-4 rounded-xl text-center">
                                 <a
                                     href={`http://localhost:5000${decryptedUrl}`}
                                     download="decrypted_image.png"
-                                    className="inline-flex items-center gap-2 text-primary hover:text-accent underline cursor-pointer"
+                                    className="inline-flex items-center gap-2 text-primary hover:text-accent font-bold underline cursor-pointer"
                                 >
-                                    Télécharger l'image
+                                    💾 Télécharger l'image originale
                                 </a>
                             </div>
                         </div>

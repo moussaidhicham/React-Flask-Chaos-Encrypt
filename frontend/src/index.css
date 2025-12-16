@@ -9,5 +9,5 @@
 }
 
 .glass-card {
-  @apply bg-dark-surface/70 backdrop-blur-lg border border-white/10 shadow-xl;
+  @apply bg-white/60 border border-gray-200 shadow-xl backdrop-blur-lg dark:bg-dark-surface/70 dark:border-white/10;
 }

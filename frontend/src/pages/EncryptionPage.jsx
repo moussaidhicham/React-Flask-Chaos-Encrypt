@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CheckCircle, AlertTriangle, FileText, Activity } from 'lucide-react';
+import HackingLoader from '../components/ui/HackingLoader';
 
 const EncryptionPage = () => {
     const location = useLocation();
@@ -54,17 +55,14 @@ const EncryptionPage = () => {
 
     if (loading) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-6">
-                <div className="relative w-24 h-24">
-                    <div className="absolute inset-0 border-4 border-gray-700 rounded-full"></div>
-                    <div className="absolute inset-0 border-4 border-t-primary border-r-accent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
-                </div>
-                <h2 className="text-2xl font-bold animate-pulse">Chiffrement en cours...</h2>
-                <div className="space-y-1 text-center text-gray-400 text-sm font-mono">
-                    <p>Génération séquences chaotiques...</p>
-                    <p>Calcul Permutation & S-Box...</p>
-                    <p>Diffusion & Confusion...</p>
-                </div>
+            <div className="flex flex-col items-center justify-center min-h-[60vh] animate-in fade-in">
+                <HackingLoader messages={[
+                    "Initialisation des vecteurs chaotiques...",
+                    "Génération des P-Box & S-Box dynamiques...",
+                    "Injection de la condition initiale sensible...",
+                    "Exécution des itérations de diffusion...",
+                    "Application de la transformation affine..."
+                ]} />
             </div>
         );
     }

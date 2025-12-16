@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Upload, Settings, Lock, Unlock, BarChart, Users, Info, Menu, X, Sun, Moon } from 'lucide-react';
+import ParticleBackground from './ParticleBackground';
 
 const Layout = ({ children }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +34,8 @@ const Layout = ({ children }) => {
     ];
 
     return (
-        <div className="min-h-screen transition-colors duration-300 bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-text-primary font-sans selection:bg-accent selection:text-white">
+        <div className="min-h-screen transition-colors duration-300 bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-text-primary font-sans selection:bg-accent selection:text-white relative z-0">
+            <ParticleBackground />
             {/* Navbar */}
             <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-dark-bg/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10 transition-colors duration-300">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">

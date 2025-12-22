@@ -9,7 +9,7 @@ import numpy as np
 analysis_bp = Blueprint('analysis', __name__)
 
 # Access SESSION_DATA from encryption module (in real app, use proper session store)
-from .encryption import SESSION_DATA
+from shared_state import SESSION_DATA
 
 @analysis_bp.route('/api/analysis', methods=['GET'])
 def analyze():
@@ -52,7 +52,7 @@ def analyze():
     Image.fromarray(orig_mod).save(mod_path)
     
     # Encrypt modified image with SAME params
-    enc_mod_img, _, _ = EncryptionService.encrypt_image(mod_path, params)
+    enc_mod_img, _, _, _ = EncryptionService.encrypt_image(mod_path, params)
     
     npcr, uaci = AnalysisService.calculate_npcr_uaci(enc_img, enc_mod_img)
     

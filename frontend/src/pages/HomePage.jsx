@@ -32,14 +32,14 @@ const HomePage = () => {
                 </motion.div>
 
                 <motion.h1 variants={itemVariants} className="text-6xl md:text-7xl font-extrabold mb-6 tracking-tight">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-white to-accent">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary to-accent dark:from-primary dark:via-white dark:to-accent">
                         Chiffrement Chaotique
                     </span>
                     <br />
-                    <span className="text-white">Avancé</span>
+                    <span className="text-gray-900 dark:text-white">Avancé</span>
                 </motion.h1>
 
-                <motion.p variants={itemVariants} className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                <motion.p variants={itemVariants} className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
                     Une solution de sécurité cryptographique exploitant la puissance du chaos déterministe,
                     les S-Box dynamiques et le chiffrement affine pour une protection absolue.
                 </motion.p>
@@ -49,7 +49,7 @@ const HomePage = () => {
                     onClick={() => navigate('/upload')}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="group bg-white text-dark-bg px-8 py-4 rounded-full font-bold text-lg flex items-center gap-2 mx-auto hover:shadow-2xl hover:shadow-white/25 transition-all"
+                    className="group bg-primary text-white px-8 py-4 rounded-full font-bold text-lg flex items-center gap-2 mx-auto hover:shadow-2xl hover:shadow-primary/25 transition-all"
                 >
                     Commencer l'Expérience <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </motion.button>
@@ -113,10 +113,10 @@ const HomePage = () => {
 
             {/* Team Preview */}
             <motion.section variants={itemVariants} className="text-center pt-10">
-                <p className="text-gray-500 mb-6">Réalisé avec passion par</p>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 font-medium uppercase tracking-widest text-xs">Réalisé avec passion par</p>
                 <div className="flex justify-center gap-6">
-                    {['Hicham', 'Ahmed', 'Mohamed'].map((name) => (
-                        <span key={name} className="px-6 py-2 rounded-full bg-white/5 border border-white/10 font-semibold text-gray-300">
+                    {['Hicham Moussaid', 'Ahmed Bouba', 'Mohamed Khalidi'].map((name) => (
+                        <span key={name} className="px-6 py-2 rounded-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 font-bold text-gray-700 dark:text-gray-300 shadow-sm">
                             {name}
                         </span>
                     ))}

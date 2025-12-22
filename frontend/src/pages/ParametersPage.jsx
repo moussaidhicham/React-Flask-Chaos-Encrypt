@@ -35,10 +35,10 @@ const ParametersPage = () => {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="text-center space-y-2">
-                <h2 className="text-3xl font-bold text-white">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
                     Configuration des Cartes Chaotiques
                 </h2>
-                <p className="text-gray-400">
+                <p className="text-gray-600 dark:text-gray-400 font-medium">
                     Ajustez les conditions initiales et les paramètres de contrôle pour générer la clé.
                 </p>
             </div>

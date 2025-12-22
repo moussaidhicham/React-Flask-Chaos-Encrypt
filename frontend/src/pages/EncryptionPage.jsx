@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CheckCircle, AlertTriangle, FileText, Activity } from 'lucide-react';
 import HackingLoader from '../components/ui/HackingLoader';
+import ProcessLog from '../components/ui/ProcessLog';
 
 const EncryptionPage = () => {
     const location = useLocation();
@@ -12,6 +13,8 @@ const EncryptionPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        let active = true;
+
         const startEncryption = async () => {
             // Case 1: New Encryption Requested (via Parameters Page)
             if (location.state?.file && location.state?.params) {
@@ -25,32 +28,42 @@ const EncryptionPage = () => {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     });
 
-                    setResult(response.data);
-                    setLoading(false);
+                    if (active) {
+                        setResult(response.data);
+                        setLoading(false);
+                    }
                 } catch (err) {
                     console.error(err);
-                    setError("Erreur lors du chiffrement. Vérifiez le backend.");
-                    setLoading(false);
+                    if (active) {
+                        setError("Erreur lors du chiffrement. Vérifiez le backend.");
+                        setLoading(false);
+                    }
                 }
             }
             // Case 2: Page Refresh (Try to recover last session)
             else {
                 try {
                     const response = await axios.get('http://localhost:5000/api/result');
-                    if (response.data && response.data.status === 'success') {
-                        setResult(response.data);
-                        setLoading(false);
-                    } else {
-                        navigate('/upload');
+                    if (active) {
+                        if (response.data && response.data.status === 'success') {
+                            setResult(response.data);
+                            setLoading(false);
+                        } else {
+                            navigate('/upload');
+                        }
                     }
                 } catch (err) {
                     // No session found, redirect to upload
-                    navigate('/upload');
+                    if (active) {
+                        navigate('/upload');
+                    }
                 }
             }
         };
 
         startEncryption();
+
+        return () => { active = false; };
     }, []);
 
     if (loading) {
@@ -74,6 +87,18 @@ const EncryptionPage = () => {
                 <h2 className="text-2xl font-bold">{error}</h2>
                 <button onClick={() => navigate('/upload')} className="bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20 text-white">
                     Réessayer
+                </button>
+            </div>
+        )
+    }
+
+    if (!result) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] text-orange-500 space-y-4">
+                <AlertTriangle size={64} />
+                <h2 className="text-2xl font-bold">État invalide ou session perdue</h2>
+                <button onClick={() => navigate('/upload')} className="bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20 text-white">
+                    Recommencer
                 </button>
             </div>
         )
@@ -130,7 +155,11 @@ const EncryptionPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+
+
+            {/* LIVE PROCESS LOG */}
+            <ProcessLog logs={result.process_log} />
+        </div >
     );
 };
 

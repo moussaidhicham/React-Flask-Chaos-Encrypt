@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Upload, Settings, Lock, Unlock, BarChart, Users, Info, Menu, X, Sun, Moon } from 'lucide-react';
+import logo from '../../assets/logo.png';
 import ParticleBackground from './ParticleBackground';
 
 const Layout = ({ children }) => {
@@ -41,7 +42,7 @@ const Layout = ({ children }) => {
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-accent animate-pulse" />
+                        <img src={logo} alt="ChaosCrypt" className="w-10 h-10 object-cover rounded-full shadow-sm border border-white/10" />
                         <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
                             ChaosCrypt
                         </span>
@@ -114,11 +115,11 @@ const Layout = ({ children }) => {
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-gray-600 dark:text-gray-500 mb-2">Projet Mini-Projet - Master ENS Meknès</p>
                     <div className="flex justify-center gap-4 text-sm font-semibold text-gray-500 dark:text-gray-300">
-                        <span>Hicham</span>
+                        <span>Hicham Moussaid</span>
                         <span className="text-primary">•</span>
-                        <span>Ahmed</span>
+                        <span>Ahmed Bouba</span>
                         <span className="text-primary">•</span>
-                        <span>Mohamed</span>
+                        <span>Mohamed Khalidi</span>
                     </div>
                 </div>
             </footer>

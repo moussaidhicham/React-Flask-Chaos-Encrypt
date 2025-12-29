@@ -3,8 +3,8 @@ import { Github, Linkedin, Mail } from 'lucide-react';
 
 // Import assets (You can add your photos to src/assets/)
 import hichamImg from '../assets/hicham.jpg';
-import ahmedImg from '../assets/H2.jpg';
-import mohamedImg from '../assets/H3.jpg';
+import ahmedImg from '../assets/H2.jpeg';
+import mohamedImg from '../assets/H3.jpeg';
 
 const TeamMember = ({ name, role, image }) => (
     <div className="glass-card p-8 rounded-2xl flex flex-col items-center hover:scale-105 transition-transform duration-300 group">

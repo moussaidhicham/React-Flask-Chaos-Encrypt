@@ -4,13 +4,20 @@ Application web full-stack professionnelle pour le chiffrement d'images utilisan
 
 Dévéloppée par : **Hicham, Ahmed, Mohamed**.
 
-## 🚀 Installation & Démarrage
+## Installation & Démarrage
 
 ### Pré-requis
 - Python 3.10+
 - Node.js 16+
 
-### 1. Backend (Flask)
+### Étape 1 : Cloner le Dépôt
+
+```cmd
+git https://github.com/moussaidhicham/React-Flask-Chaos-Encrypt
+cd React-Flask-Chaos-Encrypt
+```
+
+### Étape 2 : Backend (Flask)
 
 Le backend gère la cryptographie et la génération de graphes (Matplotlib).
 
@@ -21,7 +28,7 @@ python app.py
 ```
 *Le serveur démarrera sur http://localhost:5000*
 
-### 2. Frontend (React)
+### Étape 3 : Frontend (React)
 
 L'interface utilisateur moderne avec Tailwind CSS.
 
@@ -32,7 +39,7 @@ npm run dev
 ```
 *L'interface sera accessible sur http://localhost:5173*
 
-## 🌟 Fonctionnalités Clés
+## Fonctionnalités Clés
 
 - **Chiffrement Hybride Robuste** : Combinaison de cartes Logistique, Tente et PWLCM avec Substitution-Diffusion (S-Box dynamique + Chiffrement Affine).
 - **Interface Moderne & Responsive** : Thème Clair/Sombre, Menu Hamburger, compatible mobile et desktop.
@@ -43,7 +50,7 @@ npm run dev
   - **Résistance aux Attaques** : Corrélation $\approx 0$, Entropie $\approx 8$ bits, NPCR $\approx 99.6\%$.
 - **Export Automatique** : Tous les graphes d'analyse sont téléchargeables en ZIP pour vos rapports.
 
-## 📂 Structure des Exports
+## Structure des Exports
 
 Les fichiers graphiques générés se trouvent dans `backend/static/exports/` :
 - `/chaotic_maps` : Comportement des 3 cartes.
@@ -52,11 +59,10 @@ Les fichiers graphiques générés se trouvent dans `backend/static/exports/` :
 - `/correlation` : 18 scatter plots (H/V/D pour chaque canal).
 - `/metrics` : Comparaisons Entropie et NPCR/UACI.
 
-## 🛠️ Stack Technique
+## Stack Technique
 
 - **Backend** : Flask, NumPy (Calcul vectoriel), Matplotlib (Graphes).
 - **Frontend** : React, Vite, TailwindCSS, Framer Motion.
 ## Licence
 
 Ce projet est distribué sous la licence MIT. Voir le fichier `LICENSE` à la racine pour le texte complet de la licence.
-

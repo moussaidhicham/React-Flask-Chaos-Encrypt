@@ -34,7 +34,7 @@ const UploadPage = () => {
                 <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
                     Charger une Image
                 </h2>
-                <p className="text-gray-400 max-w-md mx-auto">
+                <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto font-medium">
                     Sélectionnez l'image que vous souhaitez chiffrer. Elle sera traitée localement avant d'être envoyée au serveur sécurisé.
                 </p>
             </div>

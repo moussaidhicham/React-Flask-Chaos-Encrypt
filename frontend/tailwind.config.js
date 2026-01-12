@@ -8,13 +8,14 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: '#6366f1',      /* Indigo */
-                secondary: '#8b5cf6',    /* Violet */
-                accent: '#ec4899',       /* Rose */
-                success: '#10b981',      /* Vert */
-                'dark-bg': '#0f172a',      /* Fond très foncé */
-                'dark-surface': '#1e293b', /* Surfaces */
-                'text-primary': '#f1f5f9', /* Texte blanc */
+                primary: '#3b82f6',      /* Blue-500: Professional & Secure */
+                secondary: '#64748b',    /* Slate-500: Neutral */
+                accent: '#06b6d4',       /* Cyan-500: Tech/Data Flow */
+                success: '#10b981',      /* Emerald-500: Signal Success */
+                'dark-bg': '#020617',      /* Slate-950: Intense Dark */
+                'dark-surface': '#0f172a', /* Slate-900: Card Surfaces */
+                'text-primary': '#f8fafc', /* Slate-50: Crisp White Text */
+                'text-secondary': '#94a3b8', /* Slate-400: Muted Text */
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
